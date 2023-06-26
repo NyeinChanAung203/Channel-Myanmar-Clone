@@ -41,7 +41,7 @@ class MovieProvider extends ChangeNotifier {
       }
       await AppService.fetchMovies(pageNo).then((movieList) {
         movies = movieList;
-        log(movies.toString());
+
         removeLoading();
       });
     } catch (e) {
@@ -55,7 +55,7 @@ class MovieProvider extends ChangeNotifier {
   Future<void> detailMovie(Movie movie) async {
     try {
       setLoading();
-      await AppService.fetchMovieDetail(movie).then((value) {
+      await AppService.fetchDetail(movie).then((value) {
         movieDetail = value;
         removeLoading();
       });

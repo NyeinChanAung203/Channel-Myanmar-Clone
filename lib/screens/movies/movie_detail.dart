@@ -1,18 +1,17 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cm_movie/models/movie.dart';
 import 'package:cm_movie/providers/movie_provider.dart';
+import 'package:cm_movie/services/boxes.dart';
 
 import 'package:cm_movie/themes/styles.dart';
 import 'package:cm_movie/utils/select_link_image.dart';
+import 'package:cm_movie/widgets/shimmer_detail_widget.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../widgets/loading_widget.dart';
 
 class MovieDetailScreen extends StatefulWidget {
   const MovieDetailScreen({super.key, required this.movie});
@@ -38,15 +37,23 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
       child: Scaffold(
         appBar: movieProvider.loading || movieProvider.movieDetail == null
             ? AppBar(
+                backgroundColor: kBlack,
                 leading: IconButton(
                   icon: const Icon(Icons.arrow_back_ios),
                   onPressed: () => Navigator.of(context).pop(),
                   iconSize: 18,
                 ),
+                actions: const [
+                  IconButton.filled(
+                      onPressed: null,
+                      iconSize: 20,
+                      color: kWhite,
+                      icon: Icon(Icons.star_rounded))
+                ],
               )
             : null,
         body: movieProvider.loading || movieProvider.movieDetail == null
-            ? const LoadingWidget()
+            ? const ShimmerDetailWidget()
             : CustomScrollView(
                 shrinkWrap: true,
                 slivers: [
@@ -59,7 +66,9 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                     actions: [
                       IconButton.filled(
                           onPressed: () {
-                            log(movieProvider.movieDetail!.toMap().toString());
+                            if (movieProvider.movieDetail != null) {
+                              Boxes.addMovie(movieProvider.movieDetail!);
+                            }
                           },
                           iconSize: 20,
                           color: kWhite,
@@ -77,18 +86,20 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                       centerTitle: false,
-                      background: CachedNetworkImage(
-                        imageUrl: movieProvider.movieDetail?.imgUrl ?? '',
-                        filterQuality: FilterQuality.high,
-                        fit: BoxFit.cover,
-                        placeholder: (context, url) =>
-                            const CupertinoActivityIndicator(
-                          radius: 10,
-                          color: Colors.grey,
-                        ),
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
-                      ),
+                      background: movieProvider.movieDetail?.imgUrl != null
+                          ? CachedNetworkImage(
+                              imageUrl: movieProvider.movieDetail?.imgUrl ?? '',
+                              filterQuality: FilterQuality.high,
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) =>
+                                  const CupertinoActivityIndicator(
+                                radius: 10,
+                                color: Colors.grey,
+                              ),
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
+                            )
+                          : null,
                     ),
                   ),
                   SliverToBoxAdapter(

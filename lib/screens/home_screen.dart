@@ -1,16 +1,20 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cm_movie/screens/series_detail.dart';
-import 'package:cm_movie/screens/series_screen.dart';
+import 'package:cm_movie/screens/search/search_screen.dart';
+import 'package:cm_movie/screens/tvshows/series_detail.dart';
+import 'package:cm_movie/screens/tvshows/series_screen.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'package:provider/provider.dart';
 
 import '../providers/movie_provider.dart';
+import '../providers/search_provider.dart';
 import '../providers/series_provider.dart';
 import '../themes/styles.dart';
 import '../widgets/shimmer_home_widget.dart';
-import 'movie_detail.dart';
-import 'movies_screen.dart';
+import 'movies/movie_detail.dart';
+import 'movies/movies_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({
@@ -19,42 +23,71 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      color: kYellow,
-      onRefresh: () async {
-        await Future.wait([
-          context.read<MovieProvider>().fetchMovie(pageNumber: 1),
-          context.read<SeriesProvider>().fetchSeries(pageNumber: 1),
-        ]);
-      },
-      child: context.watch<MovieProvider>().loading ||
-              context.watch<SeriesProvider>().loading
-          ? const ShimmerHomeWidget()
-          : ListView(
-              padding: const EdgeInsets.only(left: 10),
-              primary: true,
-              shrinkWrap: true,
-              children: [
-                TitleBarWidget(
-                  title: 'Movies',
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const MoviesScreen()));
-                  },
-                ),
-                const MoviesListWidget(),
-                TitleBarWidget(
-                    title: 'Tv Shows',
+    return Scaffold(
+      appBar: AppBar(
+        leading: GestureDetector(
+          onTap: () async {
+            await Future.wait([
+              context.read<MovieProvider>().fetchMovie(pageNumber: 1),
+              context.read<SeriesProvider>().fetchSeries(pageNumber: 1)
+            ]);
+          },
+          child: Container(
+            padding: const EdgeInsets.all(15),
+            child: Image.asset(
+              'assets/images/cm.png',
+              fit: BoxFit.contain,
+              scale: 0.3,
+            ),
+          ),
+        ),
+        title: const Text('Channel Myanmar'),
+        actions: [
+          IconButton(
+              onPressed: () {
+                context.read<SearchProvider>().resetState();
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const SearchScreen()));
+              },
+              icon: const Icon(Icons.search))
+        ],
+      ),
+      body: RefreshIndicator(
+        color: kYellow,
+        onRefresh: () async {
+          await Future.wait([
+            context.read<MovieProvider>().fetchMovie(pageNumber: 1),
+            context.read<SeriesProvider>().fetchSeries(pageNumber: 1),
+          ]);
+        },
+        child: context.watch<MovieProvider>().loading ||
+                context.watch<SeriesProvider>().loading
+            ? const ShimmerHomeWidget()
+            : ListView(
+                primary: true,
+                shrinkWrap: true,
+                children: [
+                  TitleBarWidget(
+                    title: 'Movies',
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const SeriesScreen()));
-                    }),
-                const SeriesListWidget(),
-                const SizedBox(
-                  height: 20,
-                )
-              ],
-            ),
+                          builder: (context) => const MoviesScreen()));
+                    },
+                  ),
+                  const MoviesListWidget(),
+                  TitleBarWidget(
+                      title: 'Tv Shows',
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const SeriesScreen()));
+                      }),
+                  const SeriesListWidget(),
+                  const SizedBox(
+                    height: 10,
+                  )
+                ],
+              ),
+      ),
     );
   }
 }
@@ -70,6 +103,7 @@ class SeriesListWidget extends StatelessWidget {
       height: 280,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.only(left: 10),
         itemCount: context.watch<SeriesProvider>().series.length,
         itemBuilder: (context, index) {
           final movie = context.watch<SeriesProvider>().series[index];
@@ -89,7 +123,7 @@ class SeriesListWidget extends StatelessWidget {
                   Expanded(
                     flex: 5,
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(5),
                       child: CachedNetworkImage(
                         imageUrl: movie.imgUrl,
                         filterQuality: FilterQuality.high,
@@ -137,6 +171,7 @@ class MoviesListWidget extends StatelessWidget {
       height: 280,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.only(left: 10),
         itemCount: context.watch<MovieProvider>().movies.length,
         itemBuilder: (context, index) {
           final movie = context.watch<MovieProvider>().movies[index];
@@ -156,7 +191,7 @@ class MoviesListWidget extends StatelessWidget {
                   Expanded(
                     flex: 5,
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(5),
                       child: CachedNetworkImage(
                         imageUrl: movie.imgUrl,
                         filterQuality: FilterQuality.high,
@@ -206,7 +241,7 @@ class TitleBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 12, left: 2),
+      padding: const EdgeInsets.only(right: 12, left: 12),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

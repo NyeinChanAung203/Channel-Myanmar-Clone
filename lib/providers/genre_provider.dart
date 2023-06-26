@@ -1,15 +1,15 @@
 import 'dart:developer';
 
+import 'package:cm_movie/models/genre.dart';
 import 'package:cm_movie/models/movie.dart';
 import 'package:cm_movie/services/app_services.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:overlay_support/overlay_support.dart';
 
-class SearchProvider extends ChangeNotifier {
+class GenreProvider extends ChangeNotifier {
   bool loading = false;
   int pageNo = 1;
-
-  TextEditingController name = TextEditingController();
+  String genreValue = '';
 
   setLoading() {
     loading = true;
@@ -21,54 +21,45 @@ class SearchProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<Movie> searchedMovies = [];
+  List<Movie> movies = [];
 
   Future<void> nextPage() async {
-    if (searchedMovies.isNotEmpty && name.text.isNotEmpty) {
-      pageNo++;
-      await fetchSearchMovie();
-    }
+    pageNo++;
+    await fetchMovieByGenre();
   }
 
   Future<void> backPage() async {
     if (pageNo > 1) {
       pageNo--;
-      await fetchSearchMovie();
+      await fetchMovieByGenre();
     }
   }
 
-  void resetState() {
-    pageNo = 1;
-    name.clear();
-    notifyListeners();
-  }
-
-  Future<void> fetchSearchMovie({int? pageNumber}) async {
+  Future<void> fetchMovieByGenre({int? pageNumber}) async {
     try {
       setLoading();
       if (pageNumber != null) {
         pageNo = pageNumber;
       }
-      await AppService.fetchSearchMovies(pageNo, name.text.trim())
-          .then((movieList) {
-        searchedMovies = movieList;
-
-        log(searchedMovies.toString());
+      await AppService.fetchMoviesByGenre(genreValue, pageNo).then((movieList) {
+        movies = movieList;
+        log('movies => $movies');
         removeLoading();
       });
     } catch (e) {
       toast(e.toString());
-      log('fetch movie error $e');
+      log('fetchMovieByGenre error $e');
       removeLoading();
     }
   }
 
-  Movie? movieDetail;
-  Future<void> detailMovie(Movie movie) async {
+  List<Genre> genres = [];
+
+  Future<void> fetchGenres() async {
     try {
       setLoading();
-      await AppService.fetchDetail(movie).then((value) {
-        movieDetail = value;
+      await AppService.fetchGenres().then((value) {
+        genres = value;
         removeLoading();
       });
     } catch (e) {

@@ -12,6 +12,6 @@ String selectLinkImage(String name) {
   } else if (name.toLowerCase().contains('usersdrive')) {
     return "assets/images/userdrive.jpg";
   } else {
-    return "assets/images/internet.png";
+    return "assets/images/internet1.png";
   }
 }

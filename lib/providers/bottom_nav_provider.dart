@@ -1,5 +1,5 @@
-import 'package:cm_movie/screens/category_screen.dart';
-import 'package:cm_movie/screens/favorite_screen.dart';
+import 'package:cm_movie/screens/categories/category_screen.dart';
+import 'package:cm_movie/screens/favorites/favorite_screen.dart';
 
 import 'package:flutter/material.dart';
 

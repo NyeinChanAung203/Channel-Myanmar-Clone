@@ -54,7 +54,7 @@ class SeriesProvider extends ChangeNotifier {
   Future<void> detailSeries(Movie movie) async {
     try {
       setLoading();
-      await AppService.fetchSeriesDetail(movie).then((value) {
+      await AppService.fetchDetail(movie).then((value) {
         seriesDetail = value;
         removeLoading();
       });

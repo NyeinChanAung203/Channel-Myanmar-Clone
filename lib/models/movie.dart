@@ -1,11 +1,26 @@
 import 'package:cm_movie/models/link.dart';
+import 'package:hive/hive.dart';
 
-class Movie {
-  final String title;
-  final String imgUrl;
-  final String url;
-  final String rating;
+part 'movie.g.dart';
+
+@HiveType(typeId: 1)
+class Movie extends HiveObject {
+  @HiveField(0)
+  String title;
+
+  @HiveField(1)
+  String imgUrl;
+
+  @HiveField(2)
+  String url;
+
+  @HiveField(3)
+  String rating;
+
+  @HiveField(4)
   List<LinkModel>? links;
+
+  @HiveField(5)
   List<String>? descriptions;
 
   Movie({
@@ -37,4 +52,8 @@ class Movie {
         links: json['links'],
         descriptions: json['descriptions']);
   }
+
+  @override
+  String toString() =>
+      "Movie(title: $title,imgUrl: $imgUrl,url: $url,rating $rating,links $links,description: $descriptions)";
 }
