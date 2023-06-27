@@ -4,6 +4,7 @@ import 'package:cm_movie/screens/movies/movie_detail.dart';
 import 'package:cm_movie/screens/tvshows/series_detail.dart';
 
 import 'package:cm_movie/services/boxes.dart';
+import 'package:cm_movie/themes/styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -44,6 +45,7 @@ class FavoriteScreen extends StatelessWidget {
                       }
                     },
                     trailing: IconButton(
+                        color: kWhite.withOpacity(0.8),
                         onPressed: () {
                           movies[index].delete();
                         },

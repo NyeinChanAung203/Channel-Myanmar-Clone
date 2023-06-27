@@ -1,4 +1,3 @@
-import 'package:cm_movie/themes/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -9,8 +8,8 @@ class ShimmerSearchWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Shimmer.fromColors(
-        baseColor: Colors.grey.shade500,
-        highlightColor: kWhite,
+        baseColor: Colors.grey.shade800,
+        highlightColor: Colors.grey.shade800.withOpacity(0.6),
         child: GridView.builder(
             padding: const EdgeInsets.all(10),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

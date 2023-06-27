@@ -63,9 +63,9 @@ class _BottonNavScreenState extends State<BottonNavScreen> {
                   BottomNavigationBarItem(
                       icon: Icon(Icons.home_filled), label: 'Home'),
                   BottomNavigationBarItem(
-                      icon: Icon(Icons.category), label: 'Categories'),
+                      icon: Icon(Icons.category), label: 'Genres'),
                   BottomNavigationBarItem(
-                      icon: Icon(Icons.bookmark), label: 'Favorites'),
+                      icon: Icon(Icons.favorite), label: 'Favorites'),
                 ]),
           ),
         );

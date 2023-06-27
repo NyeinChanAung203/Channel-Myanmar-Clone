@@ -41,7 +41,11 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
         ),
-        title: const Text('Channel Myanmar'),
+        title: Text(
+          'Channel Myanmar',
+          style:
+              Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 18),
+        ),
         actions: [
           IconButton(
               onPressed: () {
@@ -76,7 +80,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   const MoviesListWidget(),
                   TitleBarWidget(
-                      title: 'Tv Shows',
+                      title: 'TV Series',
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => const SeriesScreen()));
@@ -102,6 +106,7 @@ class SeriesListWidget extends StatelessWidget {
     return SizedBox(
       height: 280,
       child: ListView.builder(
+        key: PageStorageKey(context.watch<SeriesProvider>().series),
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.only(left: 10),
         itemCount: context.watch<SeriesProvider>().series.length,
@@ -170,6 +175,7 @@ class MoviesListWidget extends StatelessWidget {
     return SizedBox(
       height: 280,
       child: ListView.builder(
+        key: PageStorageKey(context.watch<MovieProvider>().movies),
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.only(left: 10),
         itemCount: context.watch<MovieProvider>().movies.length,
@@ -192,17 +198,55 @@ class MoviesListWidget extends StatelessWidget {
                     flex: 5,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(5),
-                      child: CachedNetworkImage(
-                        imageUrl: movie.imgUrl,
-                        filterQuality: FilterQuality.high,
-                        fit: BoxFit.cover,
-                        placeholder: (context, url) =>
-                            const CupertinoActivityIndicator(
-                          radius: 10,
-                          color: Colors.grey,
-                        ),
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
+                      child: Stack(
+                        children: [
+                          SizedBox.expand(
+                            child: CachedNetworkImage(
+                              imageUrl: movie.imgUrl,
+                              filterQuality: FilterQuality.high,
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) =>
+                                  const CupertinoActivityIndicator(
+                                radius: 10,
+                                color: Colors.grey,
+                              ),
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
+                            ),
+                          ),
+                          Positioned(
+                            right: 0,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 5, vertical: 2),
+                              decoration: const BoxDecoration(
+                                color: Colors.black87,
+                                borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(8)),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Icon(
+                                    Icons.star_rounded,
+                                    color: kYellow,
+                                    size: 14,
+                                  ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(
+                                    movie.rating,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelSmall
+                                        ?.copyWith(color: kYellow),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -247,10 +291,8 @@ class TitleBarWidget extends StatelessWidget {
         children: [
           Text(
             title,
-            style: Theme.of(context)
-                .textTheme
-                .titleMedium
-                ?.copyWith(color: kWhite),
+            style:
+                Theme.of(context).textTheme.titleLarge?.copyWith(color: kWhite),
           ),
           TextButton(
             onPressed: onTap,
@@ -258,6 +300,8 @@ class TitleBarWidget extends StatelessWidget {
               'See All',
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
                     color: kYellow,
+                    decoration: TextDecoration.underline,
+                    decorationColor: kYellow,
                   ),
             ),
           )

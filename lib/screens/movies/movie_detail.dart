@@ -48,7 +48,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                       onPressed: null,
                       iconSize: 20,
                       color: kWhite,
-                      icon: Icon(Icons.star_rounded))
+                      icon: Icon(Icons.favorite))
                 ],
               )
             : null,
@@ -72,9 +72,9 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                           },
                           iconSize: 20,
                           color: kWhite,
-                          icon: const Icon(Icons.star_rounded))
+                          icon: const Icon(Icons.favorite))
                     ],
-                    backgroundColor: kBlack,
+                    backgroundColor: const Color.fromARGB(255, 31, 33, 40),
                     expandedHeight: 300,
                     floating: false,
                     flexibleSpace: FlexibleSpaceBar(
@@ -87,17 +87,45 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                       ),
                       centerTitle: false,
                       background: movieProvider.movieDetail?.imgUrl != null
-                          ? CachedNetworkImage(
-                              imageUrl: movieProvider.movieDetail?.imgUrl ?? '',
-                              filterQuality: FilterQuality.high,
-                              fit: BoxFit.cover,
-                              placeholder: (context, url) =>
-                                  const CupertinoActivityIndicator(
-                                radius: 10,
-                                color: Colors.grey,
-                              ),
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
+                          ? Stack(
+                              children: [
+                                SizedBox(
+                                  width: double.infinity,
+                                  height: double.infinity,
+                                  child: CachedNetworkImage(
+                                    imageUrl:
+                                        movieProvider.movieDetail?.imgUrl ?? '',
+                                    filterQuality: FilterQuality.high,
+                                    fit: BoxFit.fitWidth,
+                                    placeholder: (context, url) => const Center(
+                                      child: CupertinoActivityIndicator(
+                                        radius: 10,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
+                                  ),
+                                ),
+                                Container(
+                                  width: double.infinity,
+                                  height: double.infinity,
+                                  decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                          stops: const [
+                                        0.5,
+                                        0.85,
+                                        1,
+                                      ],
+                                          colors: [
+                                        Colors.transparent,
+                                        kBlack.withOpacity(0.88),
+                                        kBlack,
+                                      ])),
+                                )
+                              ],
                             )
                           : null,
                     ),
@@ -110,14 +138,18 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                           padding: const EdgeInsets.all(10.0),
                           child: Column(
                             children: movieProvider.movieDetail!.descriptions!
-                                .map((e) => Text(
-                                      e,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium
-                                          ?.copyWith(color: kWhite),
-                                    ))
-                                .toList(),
+                                .map((e) {
+                              if (e.trim().isNotEmpty) {
+                                return Text(
+                                  e,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(color: kWhite),
+                                );
+                              }
+                              return const SizedBox.shrink();
+                            }).toList(),
                           ),
                         ),
 

@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:cm_movie/themes/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -15,8 +14,8 @@ class ShimmerDetailWidget extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: Shimmer.fromColors(
-            baseColor: Colors.grey.shade500,
-            highlightColor: kWhite,
+            baseColor: Colors.grey.shade800,
+            highlightColor: Colors.grey.shade800.withOpacity(0.6),
             child: Column(
               children: [
                 Container(

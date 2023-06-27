@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:cm_movie/constants/strings.dart';
 import 'package:cm_movie/models/genre.dart';
 import 'package:cm_movie/models/link.dart';
 import 'package:cm_movie/models/movie.dart';
@@ -38,8 +39,8 @@ class AppService {
         titles.length,
         (index) => Movie(
               title: titles[index],
-              imgUrl: imgUrls[index] ?? 'invalid url',
-              url: urls[index] ?? 'Invalid Url',
+              imgUrl: imgUrls[index] ?? kImgUrl,
+              url: urls[index] ?? kUrl,
               rating: (imdbs.length == titles.length) ? imdbs[index] : '',
             ));
 
@@ -70,7 +71,7 @@ class AppService {
         genres.length,
         (index) => Genre(
             name: genres[index].split(' ').first,
-            url: genreLinks[index] ?? 'https://channelmyanmar.org',
+            url: genreLinks[index] ?? kUrl,
             total: genres[index].split(' ').last));
 
     return genresList;
@@ -105,8 +106,8 @@ class AppService {
         titles.length,
         (index) => Movie(
               title: titles[index],
-              imgUrl: imgUrls[index] ?? 'invalid url',
-              url: urls[index] ?? 'Invalid Url',
+              imgUrl: imgUrls[index] ?? kImgUrl,
+              url: urls[index] ?? kUrl,
               rating: (imdbs.length == titles.length) ? imdbs[index] : '',
             ));
 
@@ -142,8 +143,8 @@ class AppService {
         titles.length,
         (index) => Movie(
               title: titles[index],
-              imgUrl: imgUrls[index] ?? 'invalid url',
-              url: urls[index] ?? 'Invalid Url',
+              imgUrl: imgUrls[index] ?? kImgUrl,
+              url: urls[index] ?? kUrl,
               rating: (imdbs.length == titles.length) ? imdbs[index] : '',
             ));
 
@@ -179,8 +180,8 @@ class AppService {
         titles.length,
         (index) => Movie(
               title: titles[index],
-              imgUrl: imgUrls[index] ?? 'invalid url',
-              url: urls[index] ?? 'Invalid Url',
+              imgUrl: imgUrls[index] ?? kImgUrl,
+              url: urls[index] ?? kUrl,
               rating: (imdbs.length == titles.length) ? imdbs[index] : '',
             ));
 
@@ -279,7 +280,7 @@ class AppService {
 
       final detailMovie = Movie(
           title: movie.title,
-          imgUrl: imgUrls ?? '',
+          imgUrl: imgUrls ?? kImgUrl,
           url: movie.url,
           descriptions: descriptions,
           links: linkModelList,

@@ -14,8 +14,8 @@ class ShimmerHomeWidget extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
       child: Shimmer.fromColors(
-          baseColor: Colors.grey.shade500,
-          highlightColor: kWhite,
+          baseColor: Colors.grey.shade800,
+          highlightColor: Colors.grey.shade800.withOpacity(0.6),
           child: Column(
             children: [
               const TitleBarWidget(title: 'Movies', onTap: null),

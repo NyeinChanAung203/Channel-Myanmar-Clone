@@ -48,7 +48,7 @@ class _SeriesDetailScreenState extends State<SeriesDetailScreen> {
                       onPressed: null,
                       iconSize: 20,
                       color: kWhite,
-                      icon: Icon(Icons.star_rounded))
+                      icon: Icon(Icons.favorite))
                 ],
               )
             : null,
@@ -68,13 +68,13 @@ class _SeriesDetailScreenState extends State<SeriesDetailScreen> {
                           },
                           iconSize: 20,
                           color: kWhite,
-                          icon: const Icon(Icons.star_rounded))
+                          icon: const Icon(Icons.favorite))
                     ],
                     leading: IconButton.filled(
                         iconSize: 18,
                         onPressed: () => Navigator.of(context).pop(),
                         icon: const Icon(Icons.arrow_back_ios)),
-                    backgroundColor: kBlack,
+                    backgroundColor: const Color.fromARGB(255, 31, 33, 40),
                     expandedHeight: 300,
                     floating: false,
                     flexibleSpace: FlexibleSpaceBar(
@@ -86,17 +86,45 @@ class _SeriesDetailScreenState extends State<SeriesDetailScreen> {
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                       centerTitle: false,
-                      background: CachedNetworkImage(
-                        imageUrl: movieProvider.seriesDetail?.imgUrl ?? '',
-                        filterQuality: FilterQuality.high,
-                        fit: BoxFit.cover,
-                        placeholder: (context, url) =>
-                            const CupertinoActivityIndicator(
-                          radius: 10,
-                          color: Colors.grey,
-                        ),
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
+                      background: Stack(
+                        children: [
+                          SizedBox(
+                            width: double.infinity,
+                            height: double.infinity,
+                            child: CachedNetworkImage(
+                              imageUrl:
+                                  movieProvider.seriesDetail?.imgUrl ?? '',
+                              filterQuality: FilterQuality.high,
+                              fit: BoxFit.fitWidth,
+                              placeholder: (context, url) => const Center(
+                                child: CupertinoActivityIndicator(
+                                  radius: 10,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
+                            ),
+                          ),
+                          Container(
+                            width: double.infinity,
+                            height: double.infinity,
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    stops: const [
+                                  0.5,
+                                  0.85,
+                                  1,
+                                ],
+                                    colors: [
+                                  Colors.transparent,
+                                  kBlack.withOpacity(0.88),
+                                  kBlack,
+                                ])),
+                          )
+                        ],
                       ),
                     ),
                   ),
@@ -108,21 +136,25 @@ class _SeriesDetailScreenState extends State<SeriesDetailScreen> {
                           padding: const EdgeInsets.all(10.0),
                           child: Column(
                             children: movieProvider.seriesDetail!.descriptions!
-                                .map((e) => Text(
-                                      e,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium
-                                          ?.copyWith(color: kWhite),
-                                    ))
-                                .toList(),
+                                .map((e) {
+                              if (e.trim().isNotEmpty) {
+                                return Text(
+                                  e,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(color: kWhite),
+                                );
+                              }
+                              return const SizedBox.shrink();
+                            }).toList(),
                           ),
                         ),
                         const Divider(
                           thickness: 0.2,
                         ),
                         Text(
-                          'Sorry! Cannot generate links for Tv Shows :(',
+                          'Sorry! Cannot generate links for TV Shows :(',
                           style:
                               Theme.of(context).textTheme.labelLarge?.copyWith(
                                     color: Colors.red,
