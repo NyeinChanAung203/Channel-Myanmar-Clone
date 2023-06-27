@@ -11,7 +11,7 @@ class Boxes {
     if (box.values
         .toList()
         .cast<Movie>()
-        .any((Movie element) => element.title == movie.title)) {
+        .any((Movie element) => element.url == movie.url)) {
       showSimpleNotification(const Text('Already Added to Favorites'),
           duration: const Duration(milliseconds: 600));
     } else {
