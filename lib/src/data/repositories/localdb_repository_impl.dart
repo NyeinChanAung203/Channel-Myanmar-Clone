@@ -1,4 +1,4 @@
-import 'package:cm_movie/src/data/datasources/locals/boxes.dart';
+import 'package:cm_movie/src/data/datasources/locals/localdatabase.dart';
 import 'package:cm_movie/src/data/mappers/mapper.dart';
 import 'package:cm_movie/src/domain/entities/movie.dart';
 import 'package:cm_movie/src/domain/repositories/localdb_repository.dart';

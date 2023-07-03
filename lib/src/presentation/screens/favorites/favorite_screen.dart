@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cm_movie/src/data/datasources/locals/boxes.dart';
+import 'package:cm_movie/src/data/datasources/locals/localdatabase.dart';
 import 'package:cm_movie/src/data/models/movie_dto.dart';
 
 import 'package:cm_movie/src/presentation/screens/movies/movie_detail.dart';
