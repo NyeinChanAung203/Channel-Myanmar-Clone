@@ -1,6 +1,6 @@
-# cm_movie
+# Channel_Myanmar_Application
 
-A new Flutter project.
+Movies and Tv Shows Application
 
 ## Getting Started
 
