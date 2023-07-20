@@ -1,5 +1,5 @@
-import 'package:cm_movie/src/data/repositories/series_repository_impl.dart';
 import 'package:cm_movie/src/domain/entities/movie.dart';
+import 'package:cm_movie/src/domain/repositories/series_repository.dart';
 
 abstract class SeriesUseCase {
   Future<List<Movie>> getAll(int pageNo);
@@ -7,17 +7,17 @@ abstract class SeriesUseCase {
 }
 
 class SeriesUseCaseImpl extends SeriesUseCase {
-  SeriesUseCaseImpl(this._seriesRepositoryImpl);
+  SeriesUseCaseImpl(this._seriesRepository);
 
-  final SeriesRepositoryImpl _seriesRepositoryImpl;
+  final SeriesRepository _seriesRepository;
 
   @override
   Future<List<Movie>> getAll(int pageNo) async {
-    return await _seriesRepositoryImpl.fetchSeries(pageNo);
+    return await _seriesRepository.fetchSeries(pageNo);
   }
 
   @override
   Future<Movie> getDetail(Movie movie) async {
-    return await _seriesRepositoryImpl.fetchSeriesDetail(movie);
+    return await _seriesRepository.fetchSeriesDetail(movie);
   }
 }
