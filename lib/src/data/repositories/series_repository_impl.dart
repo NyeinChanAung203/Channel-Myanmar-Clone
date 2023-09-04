@@ -1,5 +1,6 @@
 import 'package:cm_movie/src/data/datasources/remotes/app_remote_datasource.dart';
-import 'package:cm_movie/src/data/mappers/mapper.dart';
+
+import 'package:cm_movie/src/data/models/movie_dto.dart';
 import 'package:cm_movie/src/domain/entities/movie.dart';
 import 'package:cm_movie/src/domain/repositories/series_repository.dart';
 
@@ -21,7 +22,7 @@ class SeriesRepositoryImpl implements SeriesRepository {
   @override
   Future<Movie> fetchSeriesDetail(Movie movie) async {
     try {
-      final movieDTO = Mapper.movieToMovieDTO(movie);
+      final movieDTO = MovieDTO.fromEntity(movie);
       final response = await _dataSource.fetchDetail(movieDTO);
       return response.toEntity();
     } catch (e) {

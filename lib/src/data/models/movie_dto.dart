@@ -52,6 +52,16 @@ class MovieDTO extends HiveObject {
       links: links?.map((e) => e.toEntity()).toList(),
       rating: rating);
 
+  factory MovieDTO.fromEntity(Movie movie) {
+    return MovieDTO(
+        title: movie.title,
+        imgUrl: movie.imgUrl,
+        url: movie.url,
+        descriptions: movie.descriptions,
+        links: movie.links?.map((e) => LinkDTO.fromEntity(e)).toList(),
+        rating: movie.rating);
+  }
+
   factory MovieDTO.fromJson(Map json) {
     return MovieDTO(
         title: json['title'],

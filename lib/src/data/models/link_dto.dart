@@ -25,4 +25,12 @@ class LinkDTO extends HiveObject {
 
   LinkEntity toEntity() =>
       LinkEntity(name: name, url: url, quality: quality, fileSize: fileSize);
+
+  factory LinkDTO.fromEntity(LinkEntity linkEntity) {
+    return LinkDTO(
+        name: linkEntity.name,
+        url: linkEntity.url,
+        quality: linkEntity.quality,
+        fileSize: linkEntity.fileSize);
+  }
 }
