@@ -38,8 +38,9 @@ class _BottonNavScreenState extends State<BottonNavScreen> {
   Widget build(BuildContext context) {
     return Consumer<BottomNavProvider>(
       builder: (context, botnavProvider, child) {
-        return WillPopScope(
-          onWillPop: () async {
+        return PopScope(
+          canPop: false,
+          onPopInvoked: (canPop) async {
             bool result = false;
             if (botnavProvider.index != 0) {
               botnavProvider.changeIndex(0);
@@ -48,7 +49,10 @@ class _BottonNavScreenState extends State<BottonNavScreen> {
             } else if (botnavProvider.index == 0) {
               result = await askExitDialog(context);
             }
-            return Future.value(result);
+            if (result == true) {
+              canPop == true;
+            }
+            // return Future.value(result);
           },
           child: Scaffold(
             resizeToAvoidBottomInset: false,

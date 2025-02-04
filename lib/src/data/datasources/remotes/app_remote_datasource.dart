@@ -14,8 +14,7 @@ class AppRemoteDataSource {
   const AppRemoteDataSource();
 
   Future<List<MovieDTO>> fetchMoviesByGenre(String name, int pageNo) async {
-    final url = Uri.parse(
-        'https://channelmyanmar.org/category/${name.toLowerCase()}/page/$pageNo/');
+    final url = Uri.parse('$kUrl/category/${name.toLowerCase()}/page/$pageNo/');
     final response = await http.get(url);
     dom.Document html = dom.Document.html(response.body);
 
@@ -52,7 +51,7 @@ class AppRemoteDataSource {
   }
 
   Future<List<GenreDTO>> fetchGenres() async {
-    final url = Uri.parse('https://channelmyanmar.org/');
+    final url = Uri.parse('$kUrl/');
     final response = await http.get(url);
     dom.Document html = dom.Document.html(response.body);
 
@@ -82,7 +81,7 @@ class AppRemoteDataSource {
   }
 
   Future<List<MovieDTO>> fetchMovies(int pageNo) async {
-    final url = Uri.parse('https://channelmyanmar.org/movies/page/$pageNo/');
+    final url = Uri.parse('$kUrl/movies/page/$pageNo/');
     final response = await http.get(url);
     dom.Document html = dom.Document.html(response.body);
 
@@ -119,7 +118,7 @@ class AppRemoteDataSource {
   }
 
   Future<List<MovieDTO>> fetchSeries(int pageNo) async {
-    final url = Uri.parse('https://channelmyanmar.org/tvshows/page/$pageNo/');
+    final url = Uri.parse('$kUrl/tvshows/page/$pageNo/');
     final response = await http.get(url);
     dom.Document html = dom.Document.html(response.body);
 
@@ -156,7 +155,7 @@ class AppRemoteDataSource {
   }
 
   Future<List<MovieDTO>> fetchSearchMovies(int? pageNo, String name) async {
-    final url = Uri.parse('https://channelmyanmar.org/page/$pageNo/?s=$name');
+    final url = Uri.parse('$kUrl/page/$pageNo/?s=$name');
     final response = await http.get(url);
     dom.Document html = dom.Document.html(response.body);
 
@@ -196,7 +195,12 @@ class AppRemoteDataSource {
   Future<MovieDTO> fetchDetail(MovieDTO movie) async {
     final uri = Uri.parse(movie.url);
     final response = await http.get(uri);
-    dom.Document html = dom.Document.html(utf8.decode(response.body.codeUnits));
+
+    dom.Document html = dom.Document.html(
+        // utf8.decode(
+        response.body
+        //.codeUnits )
+        );
     if (movie.url.contains('tvshows')) {
       //********** Tv Shows *****************/
       final descriptions = html
@@ -204,7 +208,7 @@ class AppRemoteDataSource {
           .map((e) => e.text.toString())
           .toList();
 
-      log('$descriptions');
+      log('desc $descriptions');
 
       // final linkDatas = html
       //     .querySelectorAll('#info > div.contenidotv > div a')
@@ -214,7 +218,7 @@ class AppRemoteDataSource {
       //         })
       //     .toList();
 
-      // log(linkDatas.toString());
+      // log("links=> $linkDatas");
 
       final imgUrl =
           html.querySelector('#fixar > div.imagen > img')?.attributes['src'];
@@ -278,7 +282,7 @@ class AppRemoteDataSource {
           linkNames.length,
           (index) => LinkDTO(
               name: linkNames[index],
-              url: links[index] ?? 'https://channelmyanmar.org',
+              url: links[index] ?? kUrl,
               quality: qualities[index],
               fileSize: fileSizes[index]));
 
