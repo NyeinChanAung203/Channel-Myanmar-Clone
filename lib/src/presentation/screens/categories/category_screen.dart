@@ -20,7 +20,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
   void initState() {
     super.initState();
     if (context.read<GenreProvider>().genres.isEmpty) {
-      Future.microtask(() => context.read<GenreProvider>().fetchGenres());
+      Future.microtask(() {
+        if (mounted) {
+          context.read<GenreProvider>().fetchGenres();
+        }
+      });
     }
   }
 

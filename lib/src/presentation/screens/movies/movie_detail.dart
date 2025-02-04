@@ -27,8 +27,11 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(
-        () => context.read<MovieProvider>().detailMovie(widget.movie));
+    Future.microtask(() {
+      if (mounted) {
+        context.read<MovieProvider>().detailMovie(widget.movie);
+      }
+    });
   }
 
   @override

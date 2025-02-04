@@ -26,11 +26,13 @@ class _BottonNavScreenState extends State<BottonNavScreen> {
     super.initState();
 
     Future.microtask(() async {
-      await Future.wait([
-        context.read<MovieProvider>().fetchMovie(),
-        context.read<SeriesProvider>().fetchSeries(),
-        context.read<GenreProvider>().fetchGenres(),
-      ]);
+      if (mounted) {
+        await Future.wait([
+          context.read<MovieProvider>().fetchMovie(),
+          context.read<SeriesProvider>().fetchSeries(),
+          context.read<GenreProvider>().fetchGenres(),
+        ]);
+      }
     });
   }
 
@@ -40,7 +42,7 @@ class _BottonNavScreenState extends State<BottonNavScreen> {
       builder: (context, botnavProvider, child) {
         return PopScope(
           canPop: false,
-          onPopInvoked: (canPop) async {
+          onPopInvokedWithResult: (didPop, result) async {
             bool result = false;
             if (botnavProvider.index != 0) {
               botnavProvider.changeIndex(0);
@@ -50,9 +52,8 @@ class _BottonNavScreenState extends State<BottonNavScreen> {
               result = await askExitDialog(context);
             }
             if (result == true) {
-              canPop == true;
+              didPop == true;
             }
-            // return Future.value(result);
           },
           child: Scaffold(
             resizeToAvoidBottomInset: false,

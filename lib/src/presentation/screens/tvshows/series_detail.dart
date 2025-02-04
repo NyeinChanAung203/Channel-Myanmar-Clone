@@ -27,8 +27,11 @@ class _SeriesDetailScreenState extends State<SeriesDetailScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(
-        () => context.read<SeriesProvider>().detailSeries(widget.movie));
+    Future.microtask(() {
+      if (mounted) {
+        context.read<SeriesProvider>().detailSeries(widget.movie);
+      }
+    });
   }
 
   @override
